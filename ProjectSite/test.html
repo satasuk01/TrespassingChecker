@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.netpie.io/microgear.js"></script>
+<script>
+    const APPID = "TrespassingChecker";
+            const KEY = "8EH2uAVv0AEIoi3";
+            const SECRET = "GhEv7dGxiBvh3l5wFSOIFd2fV";
+    
+            const ALIAS = "HTML_web"; //  ชื่อตัวเอง
+            const thing1 = "TChecker"; //  ชื่อเพื่อนที่จะคุย
+    
+            var microgear = Microgear.create({
+                key: KEY,
+                secret: SECRET,
+                alias: ALIAS
+            });
+    
+            microgear.on('message', function (topic, msg) {
+                var date = Date();
+                document.getElementById("recent").innerHTML =date;
+                console.log(msg); // for debug
+                
+            });
+    
+            microgear.on('connected', function () {
+                microgear.setAlias(ALIAS);
+                document.getElementById("connected_NETPIE").innerHTML = "Connected to TrespassingChecker"
+            });
+    
+            microgear.on('present', function (event) {
+                console.log(event);
+            });
+    
+            microgear.on('absent', function (event) {
+                console.log(event);
+            });
+    
+            microgear.resettoken(function (err) {
+                microgear.connect(APPID);
+            });
+        </script>
+
+<head>
+    <style>
+        table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 60%;
+}
+
+th{
+    background:#FED973;
+    height: 40px;
+}
+
+th, td {
+  padding: 5px;
+}
+p.outset {
+    /* border-style: solid; */
+    border-width: 2px;
+    width: 70%;
+    padding: 10px;
+    background:#FED973;
+}
+.red{
+    color: #E45D50;
+}
+h1{
+    font-size: 40px;
+}
+h4{
+    margin-top:40px;
+    font-size: 18px;
+}
+input,select{
+    margin-left:12px;
+}
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 2px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+    <center>
+        <h1>TrespassingChecker</h1>
+        <div id="connected_NETPIE"></div>
+        <p class="outset">Recent Pass: <span id="recent" class="red"></span></p>
+        <h4>Select time Passing</h4>
+        <form>
+            <p>Start date <input type="date" id="startDate"><input type="time" id="startTime"></p>
+            <p>End date <input type="date" id="endDate"><input type="time" id="endTime"></p>
+            <p>Duration <select id="duration">
+                    <option value="10" type="int">10 minutes</option>
+                    <option value="15" type="int">15 minutes</option>
+                    <option value="30" type="int">30 minutes</option>
+                    <option value="60" type="int">1 hour</option>
+                    <option value="360" type="int">6 hours</option>
+                    <option value="1440" type="int">1 day</option>
+                </select>
+            </p>
+        </form>
+        <button onclick="play()">submit</button>
+        <div>
+            <h4 id="PassingSummary"></h4>
+            <table id="summaryTable"></table>
+            <h4 id="PassingLog"></h4>
+            <table id="logTable"></table>
+            <p id="error"></p>
+        </div>
+    </center>
+    <script src="script.js"></script>
+</body>
+
+</html>
